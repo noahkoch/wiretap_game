@@ -32,6 +32,30 @@
     td.finished {
       color: green; 
     }
+
+    .tools .each-tool {
+      width: 20%; 
+      border: solid 3px;
+      padding: 10px;
+      margin: 2%;
+      float: left;
+    }
+
+    .each-tool .tool-heading {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .each-tool .tool-body {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    .tools::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
   </style>
 
   <script type="text/javascript">
@@ -182,38 +206,54 @@
 
 
   <?php if($player->exists()): ?>
-    <b><?= "You are a " . $player->character_type; ?></b>
-    <p>
-      Sender and Receiver are Allies, everyone else is an Enemy.
-    </p>
-  
-    <?php if($player->character_type == 'sender'): ?>
-       Secret code: <?= $game->secret_code; ?>
-       Hint code: <?= $game->hint_code; ?>
-    <?php elseif($player->character_type == 'receiver'): ?>
-       Hint code: <?= $game->hint_code; ?>
-    <?php endif; ?>
+    <div class="tools">
+      <div class="each-tool">
+        <div class="tool-heading">Your Character</div>
+        <div class="tool-body"><?= $player->character_type; ?></div>
+      </div>
+    
+      <?php if($player->character_type == 'sender' || $player->character_type == 'receiver'): ?>
+        <div class="each-tool">
+          <div class="tool-heading">Codes</div>
+          <div class="tool-body">
+            <?php if($player->character_type == 'sender'): ?>
+               Secret code: <?= $game->secret_code; ?>
+               <br>
+               Hint code: <?= $game->hint_code; ?>
+            <?php elseif($player->character_type == 'receiver'): ?>
+               Hint code: <?= $game->hint_code; ?>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php endif; ?>
 
-    <br><br>
+      
+      <?php if($player->known_signals): ?>
+        <div class="each-tool">
+          <div class="tool-heading">Known Signals</div>
+          <div class="tool-body">
+            <p><?= $player->known_signals; ?></p>   
+          </div>
+        </div>
+      <?php endif; ?>
 
-    <b>Known Signals</b>
-    <i>Not all players will have signals. If you have signals, use them to figure out who is who.</i>
-    <p><?= $player->known_signals; ?></p>   
-
-    <br><br>
-
-    <b>Attempt Unlock</b>
-    <?php if($player->unlock_attempt): ?>
-      <?= $player->unlock_attempt; ?>
-    <?php else: ?>
-      <i>Remeber, you only get one shot</i>
-      <p>
-        <form method="POST">
-          <input type="text" name="secret_code" placeholder="5 digit number">
-          <input type="submit" name="unlock_attempt" value="Attempt Unlock">
-        </form>
-      </p>
-    <?php endif; ?>
+      <div class="each-tool">
+        <div class="tool-heading">Attempt Unlock</div>
+        <div class="tool-body">
+          <?php if($player->unlock_attempt): ?>
+            <?= $player->unlock_attempt; ?>
+          <?php else: ?>
+            <i>Remeber, you only get one shot</i>
+            <p>
+              <form method="POST">
+                <input type="text" name="secret_code" placeholder="5 digit number">
+                <input type="submit" name="unlock_attempt" value="Attempt Unlock">
+              </form>
+            </p>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
   <?php else: ?>
     <b>This game has already started, but you can follow along.</b>
   <?php endif; ?>
@@ -221,5 +261,6 @@
   <hr>
   <br>
   <b>Rules</b>
+  <a href="https://github.com/noahkoch/wiretap_game/blob/master/README.md" target="_BLANK">View Them</a>
 
 </body>
