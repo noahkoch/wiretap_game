@@ -3,6 +3,12 @@
     "require": {
         "phpunit/phpunit": "^9.1"
     },
+    "autoload": {
+      "classmap": [
+        "database/db.php",
+        "classes"
+      ]
+    },
     "authors": [
         {
             "name": "Noah Kochanowicz",
