@@ -1,0 +1,12 @@
+{
+    "name": "noahkoch/wiretap",
+    "require": {
+        "phpunit/phpunit": "^9.1"
+    },
+    "authors": [
+        {
+            "name": "Noah Kochanowicz",
+            "email": "me@noahkoch.com"
+        }
+    ]
+}
